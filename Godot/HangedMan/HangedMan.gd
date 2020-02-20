@@ -32,10 +32,11 @@ func _on_inputBox_text_entered(text):
 func _ready():
 	guess = numLines(word);
 	get_node("guessWord").text = guess
-	get_node("numTries").text = "Intentos restantes: 9" 
+	get_node("numTries").text = "Intentos restantes: 9"
+	get_node("ResetLabel").text = "Reset"
 	print(guess)
 
-#Cambiar por un for para que detecte los espacios y los quite
+# Verifica cuando el usuario gana
 func verify_win(word):
 	if(word == get_node("guessWord").text):
 		var text = "You win"
@@ -43,10 +44,14 @@ func verify_win(word):
 
 #Verifica cuando el jugador va perdiendo turnos
 func verify_lose(numTries):
-	var value = false
 	numTries = numTries-1
+	var num = 9-numTries
+	var strpath = "res://assets/assets/stage"+str(num)+".png"
+	var path = load(strpath)
+	var Draw = get_node("Area2D/Sprite")
+	Draw.set_texture(path)
 	if(numTries == 0):
-		print("Pailas")
+		GameOver("You loose")
 	return numTries
 
 
@@ -55,6 +60,18 @@ func GameOver(text):
 	get_node("inputBox").queue_free()
 	get_node("GameStatus").text = text
 
+
 # Función que me hace reset del programa
 func _on_TextureButton_pressed():
 	get_tree().reload_current_scene()
+
+
+
+
+
+
+
+
+
+
+

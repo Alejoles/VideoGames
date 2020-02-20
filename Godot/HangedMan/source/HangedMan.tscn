@@ -1,16 +1,33 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://HangedMan.gd" type="Script" id=1]
 [ext_resource path="res://assets/assets/Feltpen.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/assets/blue_button11.png" type="Texture" id=3]
 [ext_resource path="res://assets/assets/blue_button12.png" type="Texture" id=4]
+[ext_resource path="res://assets/assets/blackboard.jpg" type="Texture" id=5]
+[ext_resource path="res://assets/assets/stage0.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 40
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=2]
-size = 50
+size = 36
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 149.816, 196.792 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 26
 font_data = ExtResource( 2 )
 
 [node name="HangedMan" type="Control"]
@@ -23,10 +40,14 @@ margin_bottom = 2.44348
 rect_scale = Vector2( 1.00091, 0.996818 )
 script = ExtResource( 1 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="BackGround" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+texture = ExtResource( 5 )
 expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="guessWord" type="Label" parent="."]
 margin_left = 442.135
@@ -38,33 +59,62 @@ custom_fonts/font = SubResource( 1 )
 text = "wordless"
 
 [node name="numTries" type="Label" parent="."]
-margin_left = 355.243
-margin_top = 404.549
-margin_right = 581.243
-margin_bottom = 482.549
+margin_left = 501.703
+margin_top = 227.33
+margin_right = 727.703
+margin_bottom = 305.33
 rect_pivot_offset = Vector2( -0.435194, -0.953645 )
 custom_fonts/font = SubResource( 2 )
 text = "wordless"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GameStatus" type="Label" parent="."]
-margin_left = 284.0
-margin_top = 406.0
-margin_right = 734.0
-margin_bottom = 515.0
+margin_left = 505.629
+margin_top = 294.889
+margin_right = 627.629
+margin_bottom = 342.889
+custom_fonts/font = SubResource( 3 )
 
 [node name="inputBox" type="LineEdit" parent="."]
 margin_left = 717.641
 margin_top = 100.657
 margin_right = 775.641
 margin_bottom = 124.657
+custom_fonts/font = SubResource( 4 )
 max_length = 1
 
 [node name="TextureButton" type="TextureButton" parent="."]
-margin_left = 743.922
-margin_top = 175.822
-margin_right = 797.922
-margin_bottom = 226.822
+margin_left = 664.126
+margin_top = 398.605
+margin_right = 718.126
+margin_bottom = 449.605
 texture_normal = ExtResource( 3 )
 texture_pressed = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 94.0514, 83.0988 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Area2D"]
+position = Vector2( 102.229, 137.002 )
+texture = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 102.434, 137.825 )
+shape = SubResource( 5 )
+
+[node name="ResetLabel" type="Label" parent="."]
+margin_left = 649.97
+margin_top = 456.647
+margin_right = 689.97
+margin_bottom = 470.647
+custom_fonts/font = SubResource( 6 )
 [connection signal="text_entered" from="inputBox" to="." method="_on_inputBox_text_entered"]
 [connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]
