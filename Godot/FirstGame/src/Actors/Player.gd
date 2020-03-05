@@ -1,9 +1,9 @@
 extends Actor
 
 
-
 var state_machine
 
+var _health = 100
 
 var _canHit = true
 var _melee = false
@@ -12,6 +12,7 @@ var _hitting = false
 
 var timer = null
 var hit_delay = 0.5
+
 
 func _ready():
 	
@@ -33,7 +34,6 @@ func _physics_process(delta: float)->void:
 	var direction: = get_direction()
 	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
-	
 
 
 
@@ -51,7 +51,15 @@ func on_timeout_complete():
 	_canHit = true
 
 
+
+# Creo que estoy mal en esta zona
 func AnimationLoop(velocity: Vector2) -> void:
+	if _health == 0:
+		_health -= 50
+		die()
+		return
+	elif _health < 0:
+		return
 	var current = state_machine.get_current_node()
 	if _hitting == true:
 		if _melee == true and get_hit().y == 0:
@@ -118,18 +126,29 @@ func calculate_move_velocity(
 	return out
 
 
+
 func hurt():
+	set_physics_process(false)
 	state_machine.travel("Hurt")
-	return
+	set_physics_process(true)
+	
 
 func die():
 	state_machine.travel("Die")
+	state_machine.stop()
 	set_physics_process(false)
 
 
-func _on_Sword_Hit_area_entered(area):
-	area.queue_free()
-
 
 func _on_EnemyDetector_area_entered(area):
-	hurt()
+	if _health < 0:
+		return
+	if area.is_in_group("EnemyHit") and _health > 0:
+		hurt()
+		_health -= 50
+		print(_health)
+
+
+
+
+
